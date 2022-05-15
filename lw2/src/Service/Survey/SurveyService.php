@@ -10,13 +10,13 @@ class SurveyService implements SurveyServiceInterface
     private SurveyLoader $loader;
     private SurveyFileStorage $fileStorage;
 
-    public function __construct()
+    public function __construct(SurveyLoader $loader, SurveyFileStorage $fileStorage)
     {
-        $this->loader = new SurveyLoader();
-        $this->fileStorage = new SurveyFileStorage("./data/");
+        $loader = new SurveyLoader();
+        $fileStorage = new SurveyFileStorage("./data/");
     }
 
-    public function saveSurvey(): array
+    public function saveSurvey(): array // :survey
     {
         $survey = $this->loader->loadSurvey();
         $this->fileStorage->saveSurveyToFile($survey);
@@ -28,15 +28,15 @@ class SurveyService implements SurveyServiceInterface
         ];
     }
 
-    public function getSurvey(): array
+    public function getSurvey(): array // :survey
     {
         $survey = $this->loader->loadSurvey();
         $surveyInFile = $this->fileStorage->getSurveyFromFile($survey->getEmail());
         return [
-                'first_name' => $surveyInFile->getFirstName(),
-                'last_name' => $surveyInFile->getLastName(),
-                'email' => $survey->getEmail(),
-                'age' => $surveyInFile->getAge(),
+            'first_name' => $surveyInFile->getFirstName(),
+            'last_name' => $surveyInFile->getLastName(),
+            'email' => $survey->getEmail(),
+            'age' => $surveyInFile->getAge(),
         ];
     }
 }
